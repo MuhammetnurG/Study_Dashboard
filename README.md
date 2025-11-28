@@ -19,13 +19,13 @@ Installer usage
 - Install from a remote Git repo:
 
   ```bash
-  bash <(curl -Ls https://example.com/install.sh) REPO=https://github.com/USERNAME/REPO.git
+  bash <(curl -Ls https://github.com/MuhammetnurG/Study_Dashboard/blob/main/install.sh) REPO=https://github.com/USERNAME/REPO.git
   ```
 
 - Install from the current local directory (useful for testing):
 
   ```bash
-  bash <(curl -Ls https://example.com/install.sh) --local
+  bash <(curl -Ls https://github.com/MuhammetnurG/Study_Dashboard/blob/main/install.sh) --local
   ```
 
 - Optional environment variables:
@@ -45,3 +45,4 @@ Publishing on GitHub
 Security note
 
 Piping a remote script into `bash` runs code from the network with your privileges. Audit the script before running it on production.
+
