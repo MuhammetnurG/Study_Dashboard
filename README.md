@@ -25,7 +25,7 @@ Installer usage
 - Install from the current local directory (useful for testing):
 
   ```bash
-  bash <(curl -Ls https://github.com/MuhammetnurG/Study_Dashboard/blob/main/install.sh) --local
+  bash <(curl -fsSL https://raw.githubusercontent.com/MuhammetnurG/Study_Dashboard/main/install.sh) --local
   ```
 
 - Optional environment variables:
@@ -45,6 +45,7 @@ Publishing on GitHub
 Security note
 
 Piping a remote script into `bash` runs code from the network with your privileges. Audit the script before running it on production.
+
 
 
 
