@@ -1,22 +1,28 @@
-# Study Dashboard
+Study Dashboard
 
-This repository contains a small static site (`study_dashboard.html`, `script.js`, `styles.css`) and an optional small Node static server.
+A lightweight static dashboard application, deployable with a single command.
+This repository includes a small static site (study_dashboard.html, script.js, styles.css) and an optional Node.js static server for hosting.
 
-Goal: Make this project installable on an internet server with a single-line installer like:
+🚀 Goal
+
+Make the project installable on any internet-connected Linux server using a one-line installer:
 
 ```bash
 bash <(curl -fsSL https://raw.githubusercontent.com/MuhammetnurG/Study_Dashboard/main/install.sh) REPO=https://github.com/MuhammetnurG/Study_Dashboard.git
 ```
 
-What I added
-- `install.sh` : installer script (see below)
-- `server.js` and `package.json` : minimal Node/Express static server
-- `study-dashboard.service` : systemd unit template
-- `nginx.conf.example` : nginx reverse proxy example
+📦 What’s Included
 
-Installer usage
+install.sh – Automated installer (see usage below)
 
-- Install from a remote Git repo:
+server.js & package.json – Minimal Node/Express static file server
+
+study-dashboard.service – Systemd service template for persistent hosting
+
+nginx.conf.example – Example Nginx reverse-proxy configuration
+
+🛠 Installer Usage
+Install from a Remote Git Repository
 
   ```bash
   bash <(curl -fsSL https://raw.githubusercontent.com/MuhammetnurG/Study_Dashboard/main/install.sh) REPO=https://github.com/MuhammetnurG/Study_Dashboard.git
@@ -28,23 +34,28 @@ Installer usage
   bash <(curl -fsSL https://raw.githubusercontent.com/MuhammetnurG/Study_Dashboard/main/install.sh) --local
   ```
 
-- Optional environment variables:
-  - `INSTALL_DIR=/opt/study-dashboard` — change install location
-  - `--port 8000` — change listening port
+Optional Parameters
 
-Notes for production
-- The installer creates a systemd service; you need `sudo` privileges for that.
-- It's recommended to front the service with `nginx` and TLS (use Certbot or another ACME client).
+INSTALL_DIR=/opt/study-dashboard — Custom installation directory
 
-Publishing on GitHub
+--port 8000 — Specify a custom port for the Node server
 
-1. Create a new repo on GitHub.
-2. Push the project files to the repository.
-3. Host `install.sh` (the raw file) at a stable URL (you can use GitHub raw URL or a small CDN).
+🏗 Production Notes
 
-Security note
+The installer creates and enables a systemd service.
+→ Requires sudo privileges.
 
-Piping a remote script into `bash` runs code from the network with your privileges. Audit the script before running it on production.
+For production deployment, pairing the service with Nginx + TLS is recommended.
+→ Use Certbot or any ACME client for HTTPS.
+
+📤 Publishing on GitHub
+
+Create a new GitHub repository.
+
+Push this project’s files.
+
+Ensure install.sh is accessible via a stable URL (GitHub raw links work fine).
+
 
 
 
