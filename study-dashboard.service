@@ -1,0 +1,13 @@
+[Unit]
+Description=Study Dashboard static server
+After=network.target
+
+[Service]
+Type=simple
+User=www-data
+WorkingDirectory=/opt/study-dashboard
+ExecStart=/usr/bin/node /opt/study-dashboard/server.js 8000
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target

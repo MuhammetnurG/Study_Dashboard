@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Personal Study Dashboard</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>📚 Personal Study Dashboard</h1>
+            <div class="student-name" id="studentNameDisplay">Student Name</div>
+            <div class="input-group" style="max-width: 400px; margin: 0 auto;">
+                <input type="text" id="studentName" placeholder="Enter student name">
+                <button class="btn" onclick="updateStudentName()" style="margin-top: 10px;">Update Name</button>
+            </div>
+        </div>
+
+        <div class="stats-grid">
+            <div class="stat-card">
+                <h3>Total Assignments</h3>
+                <div class="stat-value" id="totalAssignments">0</div>
+            </div>
+            <div class="stat-card">
+                <h3>Completed</h3>
+                <div class="stat-value" id="completedAssignments">0</div>
+            </div>
+            <div class="stat-card">
+                <h3>Pending</h3>
+                <div class="stat-value" id="pendingAssignments">0</div>
+            </div>
+            <div class="stat-card">
+                <h3>Study Hours</h3>
+                <div class="stat-value" id="totalHours">0</div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>📊 Progress Overview</h2>
+            <p style="color: #666; margin-bottom: 10px;">Completion Rate</p>
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressBar">0%</div>
+            </div>
+        </div>
+
+        <div class="section">
+            <div class="tabs">
+                <button class="tab active" onclick="switchTab('assignments')">Assignments</button>
+                <button class="tab" onclick="switchTab('schedule')">Study Schedule</button>
+                <button class="tab" onclick="switchTab('notes')">Notes</button>
+            </div>
+
+            <div id="assignments-tab" class="tab-content active">
+                <h2>📝 Add New Assignment</h2>
+                <div class="input-group">
+                    <label>Assignment Title</label>
+                    <input type="text" id="assignmentTitle" placeholder="e.g., Math Homework Chapter 5">
+                </div>
+                <div class="input-group">
+                    <label>Subject</label>
+                    <input type="text" id="assignmentSubject" placeholder="e.g., Mathematics">
+                </div>
+                <div class="input-group">
+                    <label>Due Date</label>
+                    <input type="date" id="assignmentDate">
+                </div>
+                <div class="input-group">
+                    <label>Priority</label>
+                    <select id="assignmentPriority">
+                        <option value="low">Low</option>
+                        <option value="medium">Medium</option>
+                        <option value="high">High</option>
+                    </select>
+                </div>
+                <div class="input-group">
+                    <label>Description</label>
+                    <textarea id="assignmentDesc" rows="3" placeholder="Assignment details..."></textarea>
+                </div>
+                <button class="btn" onclick="addAssignment()">Add Assignment</button>
+
+                <div class="assignment-list" id="assignmentList"></div>
+            </div>
+
+            <div id="schedule-tab" class="tab-content">
+                <h2>📅 Add Study Session</h2>
+                <div class="input-group">
+                    <label>Subject</label>
+                    <input type="text" id="scheduleSubject" placeholder="e.g., Biology">
+                </div>
+                <div class="input-group">
+                    <label>Date</label>
+                    <input type="date" id="scheduleDate">
+                </div>
+                <div class="input-group">
+                    <label>Start Time</label>
+                    <input type="time" id="scheduleStart">
+                </div>
+                <div class="input-group">
+                    <label>End Time</label>
+                    <input type="time" id="scheduleEnd">
+                </div>
+                <div class="input-group">
+                    <label>Topics</label>
+                    <textarea id="scheduleTopics" rows="2" placeholder="Topics to cover..."></textarea>
+                </div>
+                <button class="btn" onclick="addSchedule()">Add to Schedule</button>
+
+                <div class="schedule-list" id="scheduleList"></div>
+            </div>
+
+            <div id="notes-tab" class="tab-content">
+                <h2>📔 Study Notes</h2>
+                <div class="input-group">
+                    <label>Subject</label>
+                    <input type="text" id="noteSubject" placeholder="e.g., Chemistry">
+                </div>
+                <div class="input-group">
+                    <label>Notes</label>
+                    <textarea id="noteContent" rows="10" placeholder="Write your notes here..."></textarea>
+                </div>
+                <button class="btn" onclick="saveNote()">Save Note</button>
+                <button class="btn btn-danger" onclick="clearNote()">Clear</button>
+
+                <div class="assignment-list" id="notesList"></div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
