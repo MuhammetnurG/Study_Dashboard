@@ -48,14 +48,6 @@ The installer creates and enables a systemd service.
 For production deployment, pairing the service with Nginx + TLS is recommended.
 → Use Certbot or any ACME client for HTTPS.
 
-📤 Publishing on GitHub
-
-Create a new GitHub repository.
-
-Push this project’s files.
-
-Ensure install.sh is accessible via a stable URL (GitHub raw links work fine).
-
 
 
 
