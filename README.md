@@ -5,7 +5,7 @@ This repository contains a small static site (`study_dashboard.html`, `script.js
 Goal: Make this project installable on an internet server with a single-line installer like:
 
 ```bash
-bash <(curl -Ls https://example.com/install.sh) REPO=https://github.com/USERNAME/REPO.git
+bash <(curl -Ls https://example.com/install.sh) REPO=https://github.com/MuhammetnurG/Study_Dashboard.git
 ```
 
 What I added
@@ -19,7 +19,7 @@ Installer usage
 - Install from a remote Git repo:
 
   ```bash
-  bash <(curl -Ls https://github.com/MuhammetnurG/Study_Dashboard/blob/main/install.sh) REPO=https://github.com/USERNAME/REPO.git
+  bash <(curl -Ls https://github.com/MuhammetnurG/Study_Dashboard/blob/main/install.sh) REPO=https://github.com/MuhammetnurG/Study_Dashboard.git
   ```
 
 - Install from the current local directory (useful for testing):
@@ -45,4 +45,5 @@ Publishing on GitHub
 Security note
 
 Piping a remote script into `bash` runs code from the network with your privileges. Audit the script before running it on production.
+
 
