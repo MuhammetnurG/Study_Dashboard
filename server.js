@@ -13,6 +13,13 @@ app.get('/', (req, res) => {
   res.sendFile(path.join(publicDir, 'study_dashboard.html'));
 });
 
+// SPA fallback: serve the dashboard for any other GET path that isn't a static asset.
+app.get('*', (req, res) => {
+  // If the request looks like a file (has an extension), let static middleware handle it (404 if missing)
+  if (path.extname(req.path)) return res.status(404).end();
+  res.sendFile(path.join(publicDir, 'study_dashboard.html'));
+});
+
 app.listen(port, () => {
   console.log(`Study Dashboard static server listening on port ${port}`);
 });
