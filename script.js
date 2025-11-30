@@ -3,22 +3,26 @@ let schedule = [];
 let notes = [];
 let studentName = 'Student Name';
 
+const STORAGE_KEY = 'studyDashboardData_v1';
+
 function loadData() {
-    const saved = {
-        assignments: assignments,
-        schedule: schedule,
-        notes: notes,
-        studentName: studentName
-    };
-    
-    if (saved.assignments) assignments = saved.assignments;
-    if (saved.schedule) schedule = saved.schedule;
-    if (saved.notes) notes = saved.notes;
-    if (saved.studentName) {
-        studentName = saved.studentName;
-        document.getElementById('studentNameDisplay').textContent = studentName;
+    try {
+        const raw = localStorage.getItem(STORAGE_KEY);
+        if (raw) {
+            const parsed = JSON.parse(raw);
+            if (Array.isArray(parsed.assignments)) assignments = parsed.assignments;
+            if (Array.isArray(parsed.schedule)) schedule = parsed.schedule;
+            if (Array.isArray(parsed.notes)) notes = parsed.notes;
+            if (parsed.studentName) {
+                studentName = parsed.studentName;
+                const el = document.getElementById('studentNameDisplay');
+                if (el) el.textContent = studentName;
+            }
+        }
+    } catch (e) {
+        console.warn('Failed to load saved data:', e);
     }
-    
+
     updateStats();
     displayAssignments();
     displaySchedule();
@@ -26,7 +30,17 @@ function loadData() {
 }
 
 function saveData() {
-    // Data persists in memory during session
+    try {
+        const payload = {
+            assignments,
+            schedule,
+            notes,
+            studentName
+        };
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(payload));
+    } catch (e) {
+        console.warn('Failed to save data:', e);
+    }
 }
 
 function updateStudentName() {
