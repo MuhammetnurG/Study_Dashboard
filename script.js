@@ -5,41 +5,81 @@ let studentName = 'Student Name';
 
 const STORAGE_KEY = 'studyDashboardData_v1';
 
-function loadData() {
-    try {
-        const raw = localStorage.getItem(STORAGE_KEY);
-        if (raw) {
-            const parsed = JSON.parse(raw);
-            if (Array.isArray(parsed.assignments)) assignments = parsed.assignments;
-            if (Array.isArray(parsed.schedule)) schedule = parsed.schedule;
-            if (Array.isArray(parsed.notes)) notes = parsed.notes;
-            if (parsed.studentName) {
-                studentName = parsed.studentName;
-                const el = document.getElementById('studentNameDisplay');
-                if (el) el.textContent = studentName;
-            }
-        }
-    } catch (e) {
-        console.warn('Failed to load saved data:', e);
-    }
+let saveTimer = null;
+const SAVE_DELAY = 600; // ms
 
-    updateStats();
-    displayAssignments();
-    displaySchedule();
-    displayNotes();
+async function tryLoadFromServer() {
+    try {
+        const resp = await fetch('/api/data', { cache: 'no-store' });
+        if (!resp.ok) throw new Error('server returned ' + resp.status);
+        const parsed = await resp.json();
+        if (Array.isArray(parsed.assignments)) assignments = parsed.assignments;
+        if (Array.isArray(parsed.schedule)) schedule = parsed.schedule;
+        if (Array.isArray(parsed.notes)) notes = parsed.notes;
+        if (parsed.studentName) {
+            studentName = parsed.studentName;
+            const el = document.getElementById('studentNameDisplay');
+            if (el) el.textContent = studentName;
+        }
+        // also persist a local copy
+        try { localStorage.setItem(STORAGE_KEY, JSON.stringify(parsed)); } catch (e) {}
+        return true;
+    } catch (e) {
+        console.info('Server load failed, falling back to localStorage:', e);
+        return false;
+    }
 }
 
-function saveData() {
+function loadData() {
+    // Try server first, otherwise fallback to localStorage
+    tryLoadFromServer().then(ok => {
+        if (!ok) {
+            try {
+                const raw = localStorage.getItem(STORAGE_KEY);
+                if (raw) {
+                    const parsed = JSON.parse(raw);
+                    if (Array.isArray(parsed.assignments)) assignments = parsed.assignments;
+                    if (Array.isArray(parsed.schedule)) schedule = parsed.schedule;
+                    if (Array.isArray(parsed.notes)) notes = parsed.notes;
+                    if (parsed.studentName) {
+                        studentName = parsed.studentName;
+                        const el = document.getElementById('studentNameDisplay');
+                        if (el) el.textContent = studentName;
+                    }
+                }
+            } catch (e) {
+                console.warn('Failed to load saved data:', e);
+            }
+        }
+
+        updateStats();
+        displayAssignments();
+        displaySchedule();
+        displayNotes();
+    });
+}
+
+function scheduleSave() {
+    if (saveTimer) clearTimeout(saveTimer);
+    saveTimer = setTimeout(() => { saveData().catch(()=>{}); saveTimer = null; }, SAVE_DELAY);
+}
+
+async function saveData() {
+    const payload = { assignments, schedule, notes, studentName };
+    // Optimistically save locally too
+    try { localStorage.setItem(STORAGE_KEY, JSON.stringify(payload)); } catch (e) {}
+
     try {
-        const payload = {
-            assignments,
-            schedule,
-            notes,
-            studentName
-        };
-        localStorage.setItem(STORAGE_KEY, JSON.stringify(payload));
+        const resp = await fetch('/api/data', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload)
+        });
+        if (!resp.ok) throw new Error('server returned ' + resp.status);
+        return true;
     } catch (e) {
-        console.warn('Failed to save data:', e);
+        console.info('Server save failed, data saved locally only:', e);
+        return false;
     }
 }
 
@@ -49,7 +89,7 @@ function updateStudentName() {
         studentName = input;
         document.getElementById('studentNameDisplay').textContent = studentName;
         document.getElementById('studentName').value = '';
-        saveData();
+        scheduleSave();
     }
 }
 
@@ -84,7 +124,7 @@ function addAssignment() {
     };
 
     assignments.push(assignment);
-    saveData();
+    scheduleSave();
     updateStats();
     displayAssignments();
 
@@ -124,7 +164,7 @@ function toggleComplete(id) {
     const assignment = assignments.find(a => a.id === id);
     if (assignment) {
         assignment.completed = !assignment.completed;
-        saveData();
+        scheduleSave();
         updateStats();
         displayAssignments();
     }
@@ -132,7 +172,7 @@ function toggleComplete(id) {
 
 function deleteAssignment(id) {
     assignments = assignments.filter(a => a.id !== id);
-    saveData();
+    scheduleSave();
     updateStats();
     displayAssignments();
 }
@@ -159,7 +199,7 @@ function addSchedule() {
     };
 
     schedule.push(session);
-    saveData();
+    scheduleSave();
     updateStats();
     displaySchedule();
 
@@ -202,7 +242,7 @@ function calculateDuration(start, end) {
 
 function deleteSchedule(id) {
     schedule = schedule.filter(s => s.id !== id);
-    saveData();
+    scheduleSave();
     updateStats();
     displaySchedule();
 }
@@ -224,7 +264,7 @@ function saveNote() {
     };
 
     notes.push(note);
-    saveData();
+    scheduleSave();
     displayNotes();
 
     document.getElementById('noteSubject').value = '';
@@ -259,7 +299,7 @@ function displayNotes() {
 
 function deleteNote(id) {
     notes = notes.filter(n => n.id !== id);
-    saveData();
+    scheduleSave();
     displayNotes();
 }
 
