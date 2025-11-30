@@ -124,7 +124,5 @@ fi
 echo
 echo "Done. The site should be available on port $PORT on this machine." 
 echo "If you want to reverse-proxy via nginx, use the config in nginx.conf.example"
-echo "To install from GitHub automatically with curl, upload this script somewhere public and run:"
-echo "  bash <(curl -Ls https://example.com/install.sh) REPO=https://github.com/USER/REPO.git"
 
 exit 0
