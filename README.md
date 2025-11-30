@@ -1,8 +1,6 @@
 # Study Dashboard
 
 [![Project Status](https://img.shields.io/badge/status-active-brightgreen)](https://github.com/MuhammetnurG/Study_Dashboard)
-[![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
-[![Replace with CI badge](https://img.shields.io/badge/CI-setup--me-lightgrey)](#)
 
 A clean, minimal dashboard to track study sessions, goals, and progress. Study Dashboard helps learners plan sessions, log time, visualize progress, and stay motivated through data-driven insights.
 
@@ -46,6 +44,7 @@ The installer creates and enables a systemd service.
 
 For production deployment, pairing the service with Nginx + TLS is recommended.
 → Use Certbot or any ACME client for HTTPS.
+
 
 
 
